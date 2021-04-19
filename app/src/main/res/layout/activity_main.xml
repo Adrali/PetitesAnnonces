@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="331dp"
+        android:layout_height="288dp"
+        android:layout_marginBottom="20dp"
+        android:contentDescription="@string/logo"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:src="@android:drawable/ic_menu_mylocation" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="339dp"
+        android:layout_height="216dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/que_voulez_vous_faire" />
+
+        <EditText
+            android:id="@+id/et_main_utilisateur"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/nom_d_utilisateur"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_main_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:ems="10"
+            android:hint="@string/mot_de_passe"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/button_connexion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/se_connecter" />
+
+        <Button
+            android:id="@+id/button_inscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/s_inscrire" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

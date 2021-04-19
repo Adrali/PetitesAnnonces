@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Le bon Kwoin</string>
+    <string name="formulaire_d_inscription">Formulaire d\'inscription</string>
+    <string name="professionel">Professionel</string>
+    <string name="nom_d_utilisateur">Nom d\'utilisateur</string>
+    <string name="nom">Nom</string>
+    <string name="pr_nom">Prénom</string>
+    <string name="nom_entreprise">Nom Entreprise</string>
+    <string name="num_ro_t_l_phone">Numéro Téléphone</string>
+    <string name="adresse_mail">Adresse Mail</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="valider">Valider</string>
+    <string name="que_voulez_vous_faire">Que voulez vous faire ?</string>
+    <string name="s_inscrire">S\'inscrire</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="nom_de_l_annonce">Nom de l\'annonce</string>
+    <string name="prix">Prix</string>
+    <string name="description">Description</string>
+    <string name="publier">Publier</string>
+    <string name="cr_ation_d_une_annonce">Création d\'une annonce</string>
+    <string name="image_ajout">Image de l\'annonce à ajouter</string>
+    <string name="menu">Menu</string>
+    <string name="rechercher_une_annonce">Rechercher une annonce</string>
+    <string name="annonces_favorites">Annonces Favorites</string>
+    <string name="mes_annonces">Mes annonces</string>
+    <string name="publier_une_annonce">Publier une annonce</string>
+    <string name="deconnexion">Deconnexion</string>
+    <string name="liste_des_annonces">Liste des annonces</string>
+    <string name="logo">Logo</string>
+    <string name="rechercher">Rechercher</string>
+    <string name="contacter">Contacter</string>
+    <string name="image_de_l_annonce">Image de l\'annonce</string>
+</resources>
