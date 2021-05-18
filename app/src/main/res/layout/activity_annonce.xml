@@ -4,87 +4,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_login"
     tools:context=".Annonce">
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="391dp"
-        android:layout_height="548dp"
-        android:layout_marginTop="50dp"
-        android:orientation="vertical"
+    <ImageView
+        android:id="@+id/img_annonce"
+        android:layout_width="384dp"
+        android:layout_height="284dp"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/image_ajout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/btnimg_signaler"
+        tools:src="@tools:sample/avatars" />
 
-        <ImageView
-            android:id="@+id/img_ajoutannonce"
-            android:layout_width="match_parent"
-            android:layout_height="284dp"
-            android:contentDescription="@string/image_ajout"
-            tools:src="@tools:sample/avatars" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="15dp" />
-
-        <TextView
-            android:id="@+id/et_nompublication"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nom de l'annonce" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/et_prix"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Prix" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/et_description"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:gravity="start|top"
-            android:text="Description de l'annonce" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="406dp"
-        android:layout_height="54dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/et_nompublication"
+        style="@style/textMain"
+        android:layout_width="384dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/nom_de_l_annonce"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_annonce" />
 
-        <Button
-            android:id="@+id/btn_publier"
-            android:layout_width="287dp"
-            android:layout_height="wrap_content"
-            android:text="@string/contacter" />
+    <TextView
+        android:id="@+id/et_description"
+        style="@style/textMain"
+        android:layout_width="384dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="15dp"
+        android:gravity="start|top"
+        android:text="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_prix" />
 
-        <Space
-            android:layout_width="64dp"
-            android:layout_height="12dp"
-            android:layout_weight="1" />
+    <TextView
+        android:id="@+id/et_prix"
+        style="@style/textMain"
+        android:layout_width="384dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/prix"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_nompublication" />
 
-        <ImageButton
-            android:id="@+id/btn_signaler"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:contentDescription="@string/image_de_l_annonce"
-            app:srcCompat="@android:drawable/ic_dialog_alert" />
+    <Button
+        android:id="@+id/btn_message"
+        android:layout_width="190dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/message"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_appeler"
+        android:layout_width="190dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="24dp"
+        android:text="@string/appeler"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btnimg_signaler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/image_de_l_annonce"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_alert" />
+
+    <ImageButton
+        android:id="@+id/btnimg_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/ajouter_aux_favoris"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_add" />
+
+    <ImageButton
+        android:id="@+id/btnimg_supprimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/supprimer_l_annonce"
+        app:layout_constraintEnd_toEndOf="@+id/btnimg_signaler"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

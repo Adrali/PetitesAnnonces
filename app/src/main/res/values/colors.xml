@@ -9,6 +9,20 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#ffff0000</color>
     <color name="redTransparency">#aaff0000</color>
+    <color name="primary">#ff0476</color>
+    <color name="primaryVarant">#ff0476</color>
 
+    <color name="bg1">#F2F2F2</color>
+    <color name="bg2">#F2F2F2</color>
+
+
+
+
+
+    <color name="button">#D9B23D</color>
+    <color name="text">#091140</color>
+    <color name="entreFond">#F9F4E3</color>
+    <color name="textLight">#1affffff</color>
+    <color name="textMedium">#66ffffff</color>
 
 </resources>

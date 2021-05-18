@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class AjoutAnnonce extends AppCompatActivity {
     Context contexteActuel;
+    int id_user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,25 +21,28 @@ public class AjoutAnnonce extends AppCompatActivity {
         contexteActuel = this;
 
 
-        ((Button)findViewById(R.id.btn_publier)).setOnClickListener(new View.OnClickListener() {
+        ((Button)findViewById(R.id.btn_message)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
+                    String nomPublication = ((EditText) findViewById(R.id.et_nompublication)).getText().toString().trim();
+                    String prix = ((EditText) findViewById(R.id.et_prix)).getText().toString().trim();
+                    String description = ((EditText) findViewById(R.id.et_description)).getText().toString().trim();
                     boolean valide = true;
-                    if (((EditText) findViewById(R.id.et_nompublication)).getText().toString().trim().equals("")) {
+                    if (nomPublication.equals("")) {
                         ((EditText) findViewById(R.id.et_nompublication)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
                         valide = false;
                     }else{
                         ((EditText) findViewById(R.id.et_nompublication)).setBackgroundColor(getResources().getColor(R.color.white));
 
                     }
-                    if (((EditText) findViewById(R.id.et_prix)).getText().toString().trim().equals("")) {
+                    if (prix.equals("")) {
                         ((EditText) findViewById(R.id.et_prix)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
                         valide = false;
                     }else{
                         ((EditText) findViewById(R.id.et_prix)).setBackgroundColor(getResources().getColor(R.color.white));
                     }
 
-                    if (((EditText) findViewById(R.id.et_description)).getText().toString().trim().equals("")) {
+                    if (description.equals("")) {
                         ((EditText) findViewById(R.id.et_description)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
                         valide = false;
                     }else{
@@ -46,9 +50,13 @@ public class AjoutAnnonce extends AppCompatActivity {
                     }
 
                     if(valide){
-                        Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
-                        (Toast.makeText(getApplicationContext(),"Votre annonce à été publiée",Toast.LENGTH_LONG)).show();
-                        startActivity(iMenu);
+                        if(Database.getInstance().ajoutAnnonce(id_user,nomPublication,Double.parseDouble(prix),description,"00011111".getBytes(),"")){
+                            Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
+                            iMenu.putExtra("id_user",id_user);
+                            (Toast.makeText(getApplicationContext(),"Votre annonce à été publiée",Toast.LENGTH_LONG)).show();
+                            startActivity(iMenu);
+                        }
+
                     }else{
                         (Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT)).show();
                     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Le bon Kwoin</string>
+    <string name="app_name">Le Bon Kwoin</string>
     <string name="formulaire_d_inscription">Formulaire d\'inscription</string>
     <string name="professionel">Professionel</string>
     <string name="nom_d_utilisateur">Nom d\'utilisateur</string>
@@ -30,4 +30,37 @@
     <string name="rechercher">Rechercher</string>
     <string name="contacter">Contacter</string>
     <string name="image_de_l_annonce">Image de l\'annonce</string>
+    <string name="website">Site internet</string>
+    <string name="chat">Chat</string>
+    <string name="message">Message</string>
+    <string name="send_message">send message</string>
+    <string name="discussion">Discussion</string>
+    <string name="liste_chat">Liste chat</string>
+    <string name="appeler">Appeler</string>
+    <string name="supprimer_l_annonce">Supprimer l\'annonce</string>
+    <string name="ajouter_aux_favoris">Ajouter aux favoris</string>
+
+
+    <string-array name="liste_regions">
+        <item>Toutes Regions</item>
+        <item>Auvergne-Rhône-Alpes</item>
+        <item>Bourgogne-Franche-Comté</item>
+        <item>Bretagne</item>
+        <item>Centre-Val de Loire</item>
+        <item>Corse</item>
+        <item>Grand Est</item>
+        <item>Hauts-de-France</item>
+        <item>Île-de-France</item>
+        <item>Normandie</item>
+        <item>Nouvelle-Aquitaine</item>
+        <item>Occitanie</item>
+        <item>Pays de la Loire</item>
+        <item>Provence-Alpes-Côte d\'Azur</item>
+        <item>Guadeloupe</item>
+        <item>Martinique</item>
+        <item>Guyane</item>
+        <item>La Réunion</item>
+        <item>Mayotte</item>
+
+    </string-array>
 </resources>

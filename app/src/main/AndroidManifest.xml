@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PetitesAnnonces">
-        <activity android:name=".Annonce"></activity>
+        <activity android:name=".Liste_Mes_Annonces"></activity>
+        <activity android:name=".ListeChat" />
+        <activity android:name=".Chat" />
+        <activity android:name=".Annonce" />
         <activity android:name=".Liste_Annonces" />
         <activity android:name=".AjoutAnnonce" />
         <activity android:name=".Menu" />

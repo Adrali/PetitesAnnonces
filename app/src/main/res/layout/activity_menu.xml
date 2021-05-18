@@ -7,6 +7,7 @@
     tools:context=".Menu">
 
     <TextView
+        style="@style/textStyle"
         android:id="@+id/textView4"
         android:layout_width="412dp"
         android:layout_height="23dp"
@@ -16,56 +17,77 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="367dp"
-        android:layout_height="342dp"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4">
+    <Button
+        android:id="@+id/btn_recherche_annonce"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/rechercher_une_annonce"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="98dp" />
 
-        <Button
-            android:id="@+id/btn_recherche_annonce"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/rechercher_une_annonce" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="342dp" />
 
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <Button
-            android:id="@+id/btn_annonces_fav"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/annonces_favorites" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <Button
-            android:id="@+id/btn_mes_annonces"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/mes_annonces" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <Button
-            android:id="@+id/btn_publier_annonces"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/publier_une_annonce" />
-
-    </LinearLayout>
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="146dp" />
 
     <Button
+        android:id="@+id/btn_mes_annonces"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mes_annonces"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="294dp" />
+
+    <Button
+        android:id="@+id/btn_liste_chat"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chat"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="490dp" />
+
+    <Button
+        android:id="@+id/btn_annonces_fav"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/annonces_favorites"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="196dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="440dp" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="244dp" />
+
+    <Button
+        android:id="@+id/btn_publier_annonces"
+        style="@style/ButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/publier_une_annonce"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="392dp" />
+
+    <Button
+        style="@style/ButtonStyle"
         android:id="@+id/btn_deconnexion"
         android:layout_width="146dp"
         android:layout_height="51dp"

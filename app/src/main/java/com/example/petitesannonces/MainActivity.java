@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Context contexteActuel;
-
+    Database db = Database.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,15 +31,17 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(iFormulaire);
                 }
         });
-
         ((Button)findViewById(R.id.button_connexion)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 boolean valide = true;
+                String username = "";
+                String password = "";
                 if (((EditText) findViewById(R.id.et_main_utilisateur)).getText().toString().trim().equals("")) {
                     ((EditText) findViewById(R.id.et_main_utilisateur)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
                     valide = false;
                 }else{
+                    username = ((EditText) findViewById(R.id.et_main_utilisateur)).getText().toString().trim();
                     ((EditText) findViewById(R.id.et_main_utilisateur)).setBackgroundColor(getResources().getColor(R.color.white));
 
                 }
@@ -47,14 +49,26 @@ public class MainActivity extends AppCompatActivity {
                     ((EditText) findViewById(R.id.et_main_password)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
                     valide = false;
                 }else{
+                    password = ((EditText) findViewById(R.id.et_main_password)).getText().toString().trim();
                     ((EditText) findViewById(R.id.et_main_password)).setBackgroundColor(getResources().getColor(R.color.white));
                 }
 
-                if(valide){
-                    Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
-                    startActivity(iMenu);
+                if(valide && db.isConnected()){
+                    int id = db.connectUser(username,password);
+                    if(id >= 0){
+                        Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
+                        iMenu.putExtra("id_user", id);
+                        startActivity(iMenu);
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Le nom d'utilisateur ou le mot de passe est incorect",Toast.LENGTH_SHORT).show();
+                    }
+
                 }else{
-                    Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
+                    if(db.isConnected())
+                        Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(),"DB pas init",Toast.LENGTH_SHORT).show();
+
                 }
             }
 
