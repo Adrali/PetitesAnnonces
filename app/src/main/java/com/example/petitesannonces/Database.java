@@ -1,6 +1,5 @@
 package com.example.petitesannonces;
 
-import android.media.Image;
 import android.util.Log;
 
 import java.sql.Connection;
@@ -10,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
 
 public class Database {
@@ -278,19 +276,66 @@ public class Database {
         return messages; // Id non trouvé
     }
 
-    public List<Annonce_class> rechercheAnnonces(String nom,String localisation){
+    public List<AnnonceModel> rechercheAnnonces(String nom, String localisation){
         String request = "SELECT * FROM \"Annonce\" WHERE nom LIKE ?";
-        ArrayList<Annonce_class> annonces = new ArrayList<Annonce_class>();
+        ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setString(1,"%"+localisation+"%");
             ResultSet result = statement.executeQuery();
             while(result.next()){
-                Annonce_class a = new Annonce_class(result.getInt("id_annonce"),
+                AnnonceModel a = new AnnonceModel(result.getInt("id_annonce"),
                         result.getInt("id_annonceur"),
                         result.getString("description"),
                         result.getDouble("prix"),
-                        ImageProcessing.byteArrayToBitmap(result.getBytes("image")));
+                        ImageProcessing.byteArrayToBitmap(result.getBytes("image")),
+                        result.getString("titre"));
+
+                annonces.add(a);
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+        return annonces;
+    }
+
+    public List<AnnonceModel> rechercheAnnoncesFavori(int idPersonne){
+        String request = "SELECT * FROM \"Annonce\",\"AnnoncesSave\" WHERE AnnoncesSave.id_profile = ? AND AnnoncesSave.id_profile = Annonce.id_annonceur";
+        ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
+        try{
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,idPersonne);
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                AnnonceModel a = new AnnonceModel(result.getInt("id_annonce"),
+                        result.getInt("id_annonceur"),
+                        result.getString("description"),
+                        result.getDouble("prix"),
+                        ImageProcessing.byteArrayToBitmap(result.getBytes("image")),
+                        result.getString("titre"));
+
+                annonces.add(a);
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+        return annonces;
+    }
+
+    public List<AnnonceModel> rechercheMesAnnonces(int idPersonne){
+        String request = "SELECT * FROM \"Annonce\" WHERE Annonce.id_annonceur = ?";
+        ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
+        try{
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,idPersonne);
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                AnnonceModel a = new AnnonceModel(result.getInt("id_annonce"),
+                        result.getInt("id_annonceur"),
+                        result.getString("description"),
+                        result.getDouble("prix"),
+                        ImageProcessing.byteArrayToBitmap(result.getBytes("image")),
+                        result.getString("titre"));
 
                 annonces.add(a);
             }

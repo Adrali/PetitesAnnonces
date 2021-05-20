@@ -2,7 +2,8 @@ package com.example.petitesannonces;
 
 import android.graphics.Bitmap;
 
-public class Annonce_class {
+public class AnnonceModel {
+    String nom_annonce;
     int id_annonce;
     int id_proprietaire;
     String description;
@@ -10,7 +11,8 @@ public class Annonce_class {
     Bitmap image;
 
 
-    Annonce_class(int id_annonce, int id_proprietaire, String description, double prix, Bitmap image){
+    AnnonceModel(int id_annonce, int id_proprietaire, String description, double prix, Bitmap image,String nom_annonce){
+        this.nom_annonce = nom_annonce;
         this.id_annonce = id_annonce;
         this.id_proprietaire = id_proprietaire;
         this.description = description;
@@ -36,6 +38,10 @@ public class Annonce_class {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getNom_annonce() {
+        return nom_annonce;
     }
 }
 

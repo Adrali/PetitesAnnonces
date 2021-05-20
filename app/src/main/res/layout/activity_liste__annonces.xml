@@ -19,8 +19,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout6"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewListe"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
@@ -33,10 +33,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    </LinearLayout>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_liste_annonce"
         android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"

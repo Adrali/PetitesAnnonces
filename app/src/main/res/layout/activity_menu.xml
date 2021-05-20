@@ -7,7 +7,7 @@
     tools:context=".Menu">
 
     <TextView
-        style="@style/textStyle"
+        style="@style/titreStyle"
         android:id="@+id/textView4"
         android:layout_width="412dp"
         android:layout_height="23dp"
