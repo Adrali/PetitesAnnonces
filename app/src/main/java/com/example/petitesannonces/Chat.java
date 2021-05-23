@@ -16,6 +16,8 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        id_user = getIntent().getIntExtra("id_user",-1);
+        id_dest = getIntent().getIntExtra("id_dest",-2);
         ((ImageButton)findViewById(R.id.btn_envoi_message)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {

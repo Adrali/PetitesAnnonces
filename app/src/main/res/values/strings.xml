@@ -42,7 +42,6 @@
 
 
     <string-array name="liste_regions">
-        <item>Toutes Regions</item>
         <item>Auvergne-Rhône-Alpes</item>
         <item>Bourgogne-Franche-Comté</item>
         <item>Bretagne</item>

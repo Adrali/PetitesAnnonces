@@ -15,19 +15,21 @@ import java.util.List;
 public class ItemAnnonceAdapter extends RecyclerView.Adapter<ItemAnnonceAdapter.ItemAnnonceViewHolder> {
     List<AnnonceModel> annonces;
     int layoutId;
+    final int NB_ITEM_MAX = 40;
     public ItemAnnonceAdapter(List<AnnonceModel> annonces, int layoutId){
         this.annonces = annonces;
         this.layoutId = layoutId;
     }
     public class ItemAnnonceViewHolder extends RecyclerView.ViewHolder {
 
-        TextView nom;
-        TextView prix;
+        public TextView nom;
+        public TextView prix;
         public ItemAnnonceViewHolder(View itemView) {
             super(itemView);
             nom = itemView.findViewById(R.id.nom_item_annonce);
             prix = itemView.findViewById(R.id.prix_item_annonce);
         }
+
     }
 
     @Override
@@ -44,12 +46,15 @@ public class ItemAnnonceAdapter extends RecyclerView.Adapter<ItemAnnonceAdapter.
     public void onBindViewHolder(ItemAnnonceViewHolder viewHolder, int position) {
         AnnonceModel current = annonces.get(position);
         viewHolder.nom.setText(current.nom_annonce);
-        viewHolder.prix.setText(String.valueOf(current.prix));
+        viewHolder.prix.setText(String.valueOf(current.prix) + "€");
     }
 
     @Override
     public int getItemCount() {
-        return annonces.size()>20?20:annonces.size();
+        return annonces.size()>NB_ITEM_MAX?NB_ITEM_MAX:annonces.size();
     }
 
+    public AnnonceModel getAnnonce(int position){
+        return this.annonces.get(position);
+    }
 }

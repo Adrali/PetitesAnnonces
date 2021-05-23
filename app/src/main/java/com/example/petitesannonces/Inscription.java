@@ -20,6 +20,8 @@ import java.util.regex.*;
 public class Inscription extends AppCompatActivity {
     Context contexteActuel;
     boolean isProfessional;
+    Database db = Database.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         contexteActuel = this;
@@ -119,7 +121,9 @@ public class Inscription extends AppCompatActivity {
                     ((EditText)findViewById(R.id.et_password)).setBackgroundColor(getResources().getColor(R.color.white));
                 }
 
-                if(valide) {
+
+
+                if(valide && db.isConnected()) {
                     if(Database.getInstance().userExist(username)){
                         if(isProfessional)
                             Database.getInstance().signInUser(username,password,firstname,lastname,phone,email);
@@ -134,7 +138,10 @@ public class Inscription extends AppCompatActivity {
                     }
 
                 }else{
-                    (Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT)).show();
+                    if(db.isConnected())
+                        Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(),"Erreur de connexion avec la base de donnée",Toast.LENGTH_SHORT).show();
                 }
             }
         });

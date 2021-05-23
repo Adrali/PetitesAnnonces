@@ -75,6 +75,47 @@ public class Database {
         return -1; // Id non trouvé
     }
 
+    public UserModel getUser(int idUser){
+        String request = "SELECT id FROM \"Profile\" WHERE id = ?" +
+                "";
+        ResultSet result_gene = null,result_name = null;
+        String name = "";
+        try{
+            //On cherche les infos principales
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,idUser);
+            result_gene = statement.executeQuery();
+            if(result_gene.next()){
+                //On regarde si c'est un particulier
+                request = "SELECT id FROM \"Profile_Pers\" WHERE id = ?";
+                statement = connexion.prepareStatement(request);
+                statement.setInt(1,idUser);
+                result_name = statement.executeQuery();
+                if(result_name.next()){
+                    name =  result_name.getString("firstName") + result_name.getString("lastName");
+                }else{
+                    //Sinon c'est un pro
+                    request = "SELECT id FROM \"Profile_Pro\" WHERE id = ?";
+                    statement = connexion.prepareStatement(request);
+                    statement.setInt(1,idUser);
+                    result_name = statement.executeQuery();
+                    if(!result_name.next()) {
+                        //Il y a une erreur sur le profil
+                        return null;
+                    }else{
+                        name = result_name.getString("companyName");
+                    }
+                }
+                return new UserModel(idUser,name,result_gene.getString("contactPhone"),result_gene.getString("contactMail"));
+            }else{
+                return null;
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+        return null;
+    }
+
 
     public boolean userExist(String username){
         String request = "SELECT id FROM \"Profile\" WHERE username = ?";
@@ -187,7 +228,7 @@ public class Database {
     public boolean reportAnnonce(int id_profile, int id_annonce, String raison){
         /**Report une annonce**/
 
-        String request = "INSERT INTO ReportAnnonce (id_profile,id_annonce,raison) values (?,?,?)";
+        String request = "INSERT INTO \"ReportAnnonce\" (id_profile,id_annonce,raison) values (?,?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile);
@@ -205,7 +246,7 @@ public class Database {
 
     public boolean ajoutFavoris(int id_profile, int id_annonce){
         /**Ajoute une annonce des favoris d'un utilisateur**/
-        String request = "INSERT INTO ReportAnnonce (id_profile,id_annonce,raison) values (?,?,?)";
+        String request = "INSERT INTO \"AnnoncesSaves\" (id_profile,id_annonce,raison) values (?,?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile);
@@ -222,7 +263,7 @@ public class Database {
 
     public boolean retirerFavoris(int id_profile, int id_annonce){
         /**Retire une annonce des favoris d'un utilisateur**/
-        String request = "DELETE FROM ReportAnnonce WHERE id_profile = ? AND id_annonce = ?)";
+        String request = "DELETE FROM \"AnnoncesSaves\" WHERE id_profile = ? AND id_annonce = ?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile);
@@ -235,6 +276,25 @@ public class Database {
             System.out.println("Erreur sql : " + e);
         }
         return false;
+    }
+
+    public boolean estFavoris(int id_profile, int id_annonce){
+        String request = "SELECT FROM \"AnnoncesSaves\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?)";
+        ArrayList<String> messages = new ArrayList<String>();
+        try{
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,id_profile);
+            statement.setInt(2,id_annonce);
+
+            ResultSet result = statement.executeQuery();
+            if(result.next()){
+                return true;
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+
+        return false; // Id non trouvé
     }
 
     public boolean envoyerMessage(int id_profile_emmeteur, int id_profile_recepteur, String message){
@@ -256,18 +316,18 @@ public class Database {
     }
 
 
-    public List<String> obtenirMessage(int id_profile_1, int id_profile_2, String message){
+    public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur, String message){
         String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?) OR (id_profile_emetteur = ? AND id_profile_recepteur = ?) ORDER BY date_envoie ASC";
-        ArrayList<String> messages = new ArrayList<String>();
+        ArrayList<MessageModel> messages = new ArrayList<MessageModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
-            statement.setInt(1,id_profile_1);
-            statement.setInt(2,id_profile_2);
-            statement.setInt(3,id_profile_2);
-            statement.setInt(4,id_profile_1);
+            statement.setInt(1,idUser);
+            statement.setInt(2,idInterlocuteur);
+            statement.setInt(3,idInterlocuteur);
+            statement.setInt(4,idUser);
             ResultSet result = statement.executeQuery();
             while(result.next()){
-                messages.add(result.getString("message"));
+                messages.add(new MessageModel(result.getString("message"),result.getInt("id_profile_emetteur") == idUser ? true:false));
             }
         }catch(java.sql.SQLException e){
             System.out.println("Erreur sql : " + e);
@@ -275,6 +335,7 @@ public class Database {
 
         return messages; // Id non trouvé
     }
+
 
     public List<AnnonceModel> rechercheAnnonces(String nom, String localisation){
         String request = "SELECT * FROM \"Annonce\" WHERE nom LIKE ?";
@@ -297,6 +358,30 @@ public class Database {
             System.out.println("Erreur sql : " + e);
         }
         return annonces;
+    }
+
+    public AnnonceModel rechercheAnnonce(int id_annonce){
+        String request = "SELECT * FROM \"Annonce\" WHERE id_annonce = ?";
+        AnnonceModel annonce;
+        try{
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,id_annonce);
+            ResultSet result = statement.executeQuery();
+            if(result.next()){
+                return new AnnonceModel(result.getInt("id_annonce"),
+                        result.getInt("id_annonceur"),
+                        result.getString("description"),
+                        result.getDouble("prix"),
+                        ImageProcessing.byteArrayToBitmap(result.getBytes("image")),
+                        result.getString("titre"));
+
+            }else{
+                return null;
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+        return null;
     }
 
     public List<AnnonceModel> rechercheAnnoncesFavori(int idPersonne){

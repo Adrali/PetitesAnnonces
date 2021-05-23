@@ -52,13 +52,15 @@ public class MainActivity extends AppCompatActivity {
                     password = ((EditText) findViewById(R.id.et_main_password)).getText().toString().trim();
                     ((EditText) findViewById(R.id.et_main_password)).setBackgroundColor(getResources().getColor(R.color.white));
                 }
-
+                Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
+                iMenu.putExtra("id_user",1);
+                startActivity(iMenu);
                 if(valide && db.isConnected()){
                     int id = db.connectUser(username,password);
                     if(id >= 0){
-                        Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
+                        /*Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
                         iMenu.putExtra("id_user", id);
-                        startActivity(iMenu);
+                        startActivity(iMenu);*/
                     }else{
                         Toast.makeText(getApplicationContext(),"Le nom d'utilisateur ou le mot de passe est incorect",Toast.LENGTH_SHORT).show();
                     }
@@ -67,8 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     if(db.isConnected())
                         Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
                     else
-                        Toast.makeText(getApplicationContext(),"DB pas init",Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getApplicationContext(),"Erreur de connexion avec la base de donnée",Toast.LENGTH_SHORT).show();
                 }
             }
 
