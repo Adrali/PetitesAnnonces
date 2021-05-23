@@ -106,7 +106,6 @@ public class Annonce extends AppCompatActivity {
                     startActivity(iMenu);
                 }else{
                     Toast.makeText(getApplicationContext(),"Erreur : l'annonce n'a pas pu être supprimer",Toast.LENGTH_SHORT);
-
                 }
             }
         });

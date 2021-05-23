@@ -78,7 +78,6 @@ public class Liste_Annonces extends AppCompatActivity {
                         iAnnonce.putExtra("id_annonceur",adapter.getAnnonce(position).id_proprietaire);
                         iAnnonce.putExtra("id_annonce",adapter.getAnnonce(position).id_annonce);
                         startActivity(iAnnonce);
-
                     }
                 });
     }
