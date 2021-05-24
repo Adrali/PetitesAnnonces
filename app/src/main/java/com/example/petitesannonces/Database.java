@@ -317,7 +317,7 @@ public class Database {
     }
 
 
-    public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur, String message){
+    public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur){
         String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?) OR (id_profile_emetteur = ? AND id_profile_recepteur = ?) ORDER BY date_envoie DESC";
         ArrayList<MessageModel> messages = new ArrayList<MessageModel>();
         try{

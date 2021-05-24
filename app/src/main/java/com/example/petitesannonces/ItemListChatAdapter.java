@@ -50,7 +50,7 @@ public class ItemListChatAdapter extends RecyclerView.Adapter<ItemListChatAdapte
         return users.size()>NB_ITEM_MAX?NB_ITEM_MAX:users.size();
     }
 
-    public UserModel getAnnonce(int position){
+    public UserModel getUser(int position){
         return this.users.get(position);
     }
 }

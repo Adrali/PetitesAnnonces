@@ -24,5 +24,10 @@
     <color name="entreFond">#F9F4E3</color>
     <color name="textLight">#1affffff</color>
     <color name="textMedium">#66ffffff</color>
+    <color name="vertCanard">#025920</color>
+    <color name="bleuCanard">#091140</color>
+    <color name="jauneCanard">#D9B23D</color>
+    <color name="orangeCanard">#F26D3D</color>
+    <color name="blancCanard">#F2F2F2</color>
 
 </resources>

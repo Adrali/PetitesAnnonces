@@ -9,8 +9,8 @@
     tools:context=".AjoutAnnonce">
 
     <TextView
-        style="@style/titreStyle"
         android:id="@+id/textView3"
+        style="@style/titreStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -20,52 +20,18 @@
 
     <ImageView
         android:id="@+id/img_annonce"
-        android:layout_width="match_parent"
-        android:layout_height="284dp"
+        android:layout_width="400dp"
+        android:layout_height="253dp"
         android:layout_marginTop="80dp"
+        android:layout_marginBottom="30dp"
         android:contentDescription="@string/image_ajout"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="6dp"
-        tools:src="@tools:sample/avatars" />
-
-    <EditText
-        android:id="@+id/et_description"
-        style="@style/textEntre"
-        android:layout_width="413dp"
-        android:layout_height="142dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:gravity="start|top"
-        android:hint="@string/description"
-        android:inputType="textMultiLine"
+        android:src="@android:drawable/ic_menu_gallery"
+        app:layout_constraintBottom_toTopOf="@+id/et_nompublication"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_prix" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        />
 
-    <EditText
-        android:id="@+id/et_prix"
-        style="@style/textEntre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/prix"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_nompublication" />
-
-    <EditText
-        android:id="@+id/et_nompublication"
-        style="@style/textEntre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/nom_de_l_annonce"
-        android:inputType="textPersonName"
-        app:layout_constraintTop_toBottomOf="@+id/img_annonce"
-        tools:layout_editor_absoluteX="6dp" />
 
     <Button
         android:id="@+id/btn_message"
@@ -85,6 +51,57 @@
         android:layout_marginBottom="65dp"
         android:entries="@array/liste_regions"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imgBtn_pickImage"
+        android:layout_width="44dp"
+        android:layout_height="29dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="200dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_annonce"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <EditText
+        android:id="@+id/et_nompublication"
+        style="@style/textEntre"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/nom_de_l_annonce"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/et_prix"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/et_prix"
+        style="@style/textEntre"
+        android:layout_width="400dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/prix"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/et_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/et_description"
+        style="@style/textEntre"
+        android:layout_width="400dp"
+        android:layout_height="138dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="@string/description"
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

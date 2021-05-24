@@ -7,33 +7,22 @@
     android:background="@drawable/bg_login"
     tools:context=".Chat">
 
-    <LinearLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="406dp"
-        android:layout_height="578dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
-
     <EditText
         android:id="@+id/et_envoi_message"
         style="@style/textEntre"
-        android:layout_width="344dp"
+        android:layout_width="316dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="@string/message"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_envoi_message"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
@@ -58,5 +47,44 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewChat"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="100dp"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/et_envoi_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_titre_chat" />
+
+    <ImageButton
+        android:id="@+id/imgBtn_actualiser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="@string/recharger"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewChat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
+    <ImageButton
+        android:id="@+id/imgBtn_appeler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:contentDescription="@string/recharger"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewChat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/stat_sys_phone_call" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

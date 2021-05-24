@@ -27,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        tools:src="@drawable/pngfind_com_sprite_logo_png_907078" />
+        android:src="@drawable/pngfind_com_sprite_logo_png_907078" />
 
     <LinearLayout
         android:id="@+id/linearLayout4"

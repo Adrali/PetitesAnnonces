@@ -39,6 +39,7 @@
     <string name="appeler">Appeler</string>
     <string name="supprimer_l_annonce">Supprimer l\'annonce</string>
     <string name="ajouter_aux_favoris">Ajouter aux favoris</string>
+    <string name="recharger">recharger</string>
 
 
     <string-array name="liste_regions">

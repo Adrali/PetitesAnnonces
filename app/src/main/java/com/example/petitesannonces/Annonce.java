@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Annonce extends AppCompatActivity {
@@ -26,8 +29,7 @@ public class Annonce extends AppCompatActivity {
         id_user = getIntent().getIntExtra("id_user",-1);
         id_annonceur = getIntent().getIntExtra("id_annonceur",-2);
         id_annonceur = getIntent().getIntExtra("id_annonce",-3);
-        annonceur = Database.getInstance().getUser(id_annonceur);
-        annonce = Database.getInstance().rechercheAnnonce(id_annonce);
+
 
 
         if(id_annonce < 0 ){
@@ -58,6 +60,18 @@ public class Annonce extends AppCompatActivity {
             if(Database.getInstance().estFavoris(id_user,id_annonce)) {
                 estFavoris = true;
             }
+        }
+
+        annonceur = Database.getInstance().getUser(id_annonceur);
+        annonce = Database.getInstance().rechercheAnnonce(id_annonce);
+
+        ((TextView)findViewById(R.id.et_nompublication)).setText(annonce.getNom_annonce());
+        ((TextView)findViewById(R.id.et_prix)).setText(String.valueOf(annonce.getPrix()));
+        ((TextView)findViewById(R.id.et_description)).setText(String.valueOf(annonce.getDescription()));
+        ((ImageView)findViewById(R.id.img_annonce)).setImageBitmap(annonce.getImage());
+
+        if(annonce.getImage() != null){
+            ((ImageView)findViewById(R.id.img_annonce)).setImageDrawable(ImageProcessing.bitmapToDrawable(contexteActuel,annonce.getImage()));
         }
 
 
