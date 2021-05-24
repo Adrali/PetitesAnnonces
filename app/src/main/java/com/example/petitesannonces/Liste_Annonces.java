@@ -29,6 +29,7 @@ public class Liste_Annonces extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste__annonces);
         id_user = getIntent().getIntExtra("id_user",-1);
+        contexteActuel = this;
 
         recyclerView = findViewById(R.id.RecyclerViewListe);
         this.configureOnClickRecyclerView();

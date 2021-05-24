@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class Database {
@@ -132,7 +134,6 @@ public class Database {
 
         return false; // Id non trouvé
     }
-
 
     public boolean signInUser(String username, String password, String firstName, String name, String contactPhone, String contactMail){
         String requestVerif = "SELECT id FROM Profile WHERE username = ?";
@@ -317,7 +318,7 @@ public class Database {
 
 
     public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur, String message){
-        String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?) OR (id_profile_emetteur = ? AND id_profile_recepteur = ?) ORDER BY date_envoie ASC";
+        String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?) OR (id_profile_emetteur = ? AND id_profile_recepteur = ?) ORDER BY date_envoie DESC";
         ArrayList<MessageModel> messages = new ArrayList<MessageModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
@@ -334,6 +335,33 @@ public class Database {
         }
 
         return messages; // Id non trouvé
+    }
+
+    public List<UserModel> obtenirInterlocuteurs(int idUser){
+        String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? OR id_profile_recepteur = ?) ORDER BY date_envoie DESC";
+        ArrayList<UserModel> users = new ArrayList<UserModel>();
+        Set<Integer> idUserObtains = new HashSet<Integer>();
+        idUserObtains.add(idUser);
+        try{
+            PreparedStatement statement = connexion.prepareStatement(request);
+            statement.setInt(1,idUser);
+            statement.setInt(2,idUser);
+            ResultSet result = statement.executeQuery();
+            while(result.next()){
+                if(!idUserObtains.contains(result.getInt("id_profile_emetteur"))){
+                    idUserObtains.add(result.getInt("id_profile_emetteur"));
+                    users.add(getUser(result.getInt("id_profile_emetteur")));
+                }
+                if(!idUserObtains.contains(result.getInt("id_profile_recepteur"))) {
+                    idUserObtains.add(result.getInt("id_profile_recepteur"));
+                    users.add(getUser(result.getInt("id_profile_recepteur")));
+                }
+            }
+        }catch(java.sql.SQLException e){
+            System.out.println("Erreur sql : " + e);
+        }
+
+        return users; // Id non trouvé
     }
 
 

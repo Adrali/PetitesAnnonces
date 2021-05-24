@@ -22,11 +22,9 @@ public class ItemListChatAdapter extends RecyclerView.Adapter<ItemListChatAdapte
     public class ItemListChatViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nom;
-        public TextView prix;
         public ItemListChatViewHolder(View itemView) {
             super(itemView);
             nom = itemView.findViewById(R.id.tv_nomCorrespondant);
-            prix = itemView.findViewById(R.id.tv_dernierMessage);
         }
 
     }
@@ -44,6 +42,7 @@ public class ItemListChatAdapter extends RecyclerView.Adapter<ItemListChatAdapte
     @Override
     public void onBindViewHolder(ItemListChatAdapter.ItemListChatViewHolder viewHolder, int position) {
         UserModel current = users.get(position);
+        viewHolder.nom.setText(current.name);
     }
 
     @Override
