@@ -482,17 +482,15 @@ public class Database {
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_annonce);
             int rows = statement.executeUpdate();
-            if(rows>0){ // L'utilisateur à été inséré
+            if(rows>0) { // L'utilisateur à été inséré
                 statement = connexion.prepareStatement(request_fav);
-                statement.setInt(1,id_annonce);
+                statement.setInt(1, id_annonce);
                 rows = statement.executeUpdate();
-                if(rows>0){ // L'utilisateur à été inséré
-                    statement = connexion.prepareStatement(request_report);
-                    statement.setInt(1,id_annonce);
-                    rows = statement.executeUpdate();
-                    if(rows>0){ // L'utilisateur à été inséré
-                        return true;
-                    }
+                statement = connexion.prepareStatement(request_report);
+                statement.setInt(1, id_annonce);
+                rows = statement.executeUpdate();
+                if (rows > 0) { // L'utilisateur à été inséré
+                    return true;
                 }
             }
         }catch(java.sql.SQLException e){
