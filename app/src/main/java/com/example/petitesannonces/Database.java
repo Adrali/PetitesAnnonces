@@ -474,12 +474,26 @@ public class Database {
     /** Supprime une annonce,  retourne vrai si elle a bien été supprimée**/
     public boolean supprimerAnnonce(int id_annonce){
         String request = "DELETE FROM \"Annonce\" WHERE id_annonce = ?";
+        String request_fav = "DELETE FROM \"AnnoncesSaves\" WHERE id_annonce = ?";
+        String request_report = "DELETE FROM \"ReportAnnonce\" WHERE id_annonce = ?";
+
+
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_annonce);
             int rows = statement.executeUpdate();
             if(rows>0){ // L'utilisateur à été inséré
-                return true;
+                statement = connexion.prepareStatement(request_fav);
+                statement.setInt(1,id_annonce);
+                rows = statement.executeUpdate();
+                if(rows>0){ // L'utilisateur à été inséré
+                    statement = connexion.prepareStatement(request_report);
+                    statement.setInt(1,id_annonce);
+                    rows = statement.executeUpdate();
+                    if(rows>0){ // L'utilisateur à été inséré
+                        return true;
+                    }
+                }
             }
         }catch(java.sql.SQLException e){
             System.out.println("Erreur sql : " + e);
