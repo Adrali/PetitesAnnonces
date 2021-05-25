@@ -1,0 +1,561 @@
+--
+-- PostgreSQL database cluster dump
+--
+
+-- Started on 2021-05-25 03:58:41
+
+SET default_transaction_read_only = off;
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+
+--
+-- Roles
+--
+
+CREATE ROLE "appUser";
+ALTER ROLE "appUser" WITH NOSUPERUSER INHERIT NOCREATEROLE NOCREATEDB LOGIN NOREPLICATION NOBYPASSRLS PASSWORD 'SCRAM-SHA-256$4096:p8OLagqoGHfYtP8H+HsUSg==$klx039H2F8465RlkymYFnxy5ivKZ1cKuH5wBgrzmW3o=:kTno/vGfCTYX+RAH6HwHiH6jB0RxUn16IXIvfwKSqV0=';
+COMMENT ON ROLE "appUser" IS 'A lambda user of the app';
+CREATE ROLE postgres;
+ALTER ROLE postgres WITH SUPERUSER INHERIT CREATEROLE CREATEDB LOGIN REPLICATION BYPASSRLS PASSWORD 'SCRAM-SHA-256$4096:u6wvwiKl9IUJeVGG3vPU/w==$zBbmRvDISCmn1j1Xy9nVzyhv5VfkdZzgYQT9xmCmcMI=:b8kK6bghdiDUkgT8f8D0HK5N4zt0R9CEGRqFnk/7tGg=';
+
+
+
+
+
+
+--
+-- Databases
+--
+
+--
+-- Database "template1" dump
+--
+
+\connect template1
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.2
+-- Dumped by pg_dump version 13.2
+
+-- Started on 2021-05-25 03:58:42
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+-- Completed on 2021-05-25 03:58:42
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "petites_annonces" dump
+--
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.2
+-- Dumped by pg_dump version 13.2
+
+-- Started on 2021-05-25 03:58:42
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3041 (class 1262 OID 16394)
+-- Name: petites_annonces; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE petites_annonces WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'French_France.1252';
+
+
+ALTER DATABASE petites_annonces OWNER TO postgres;
+
+\connect petites_annonces
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 204 (class 1259 OID 24592)
+-- Name: Annonce; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Annonce" (
+    id_annonce integer NOT NULL,
+    titre text,
+    description text,
+    id_annonceur integer,
+    image bytea,
+    localisation text,
+    prix double precision,
+    categorie text
+);
+
+
+ALTER TABLE public."Annonce" OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 24622)
+-- Name: Annonce_id_annonce_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public."Annonce" ALTER COLUMN id_annonce ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."Annonce_id_annonce_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 100000
+    CACHE 1
+);
+
+
+--
+-- TOC entry 206 (class 1259 OID 24608)
+-- Name: AnnoncesSaves; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."AnnoncesSaves" (
+    id_profil integer NOT NULL,
+    id_annonce integer NOT NULL
+);
+
+
+ALTER TABLE public."AnnoncesSaves" OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 24613)
+-- Name: Messages; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Messages" (
+    id_profil_emetteur integer NOT NULL,
+    id_profil_recepteur integer NOT NULL,
+    date_envoie timestamp with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    message text
+);
+
+
+ALTER TABLE public."Messages" OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 16397)
+-- Name: Profil; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Profil" (
+    id integer NOT NULL,
+    username text NOT NULL,
+    password text NOT NULL,
+    "contactPhone" text,
+    "contactMail" text
+);
+
+
+ALTER TABLE public."Profil" OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 24584)
+-- Name: Profil_Pers; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Profil_Pers" (
+    id integer NOT NULL,
+    "firstName" text,
+    "lastName" text
+);
+
+
+ALTER TABLE public."Profil_Pers" OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 24576)
+-- Name: Profil_Pro; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."Profil_Pro" (
+    id integer NOT NULL,
+    "companyName" text,
+    website text
+);
+
+
+ALTER TABLE public."Profil_Pro" OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 16395)
+-- Name: Profile_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public."Profil" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."Profile_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 100000
+    CACHE 1
+);
+
+
+--
+-- TOC entry 205 (class 1259 OID 24600)
+-- Name: ReportAnnonce; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."ReportAnnonce" (
+    id_profil integer NOT NULL,
+    id_annonce integer,
+    raison text
+);
+
+
+ALTER TABLE public."ReportAnnonce" OWNER TO postgres;
+
+--
+-- TOC entry 3031 (class 0 OID 24592)
+-- Dependencies: 204
+-- Data for Name: Annonce; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Annonce" (id_annonce, titre, description, id_annonceur, image, localisation, prix, categorie) FROM stdin;
+1	Voiture	Vend magnifique voiture BMW comme neuve	2	\\x617a65727479	Pays de la Loire	20000.99	Automobile
+2	TV	Vend magnifique TV, quelques pixels défaillants	2	\\x74656c65766973696f6e	Pays de la Loire	150.74	Multimedia
+3	Ordinateur Portable 	PC gaming neuf	3	\\x6f7264696e6174657572	Normandie	1200.74	Multimedia
+4	Toyoto	Petite voiture de ville	4	\\x617a65727479	Pays de la Loire	5000.99	Automobile
+\.
+
+
+--
+-- TOC entry 3033 (class 0 OID 24608)
+-- Dependencies: 206
+-- Data for Name: AnnoncesSaves; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."AnnoncesSaves" (id_profil, id_annonce) FROM stdin;
+4	2
+4	3
+\.
+
+
+--
+-- TOC entry 3034 (class 0 OID 24613)
+-- Dependencies: 207
+-- Data for Name: Messages; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Messages" (id_profil_emetteur, id_profil_recepteur, date_envoie, message) FROM stdin;
+2	3	2021-05-25 02:23:48.00065+02	Bonjour, je suis interesse par votre bien
+3	2	2021-05-25 02:23:48.012982+02	Bonjour, il est encore disponible
+2	3	2021-05-25 02:23:48.013726+02	Est t'il possible de décendre le prix ?
+2	3	2021-05-25 02:23:48.014427+02	Disons 20€ ?
+3	2	2021-05-25 02:23:48.014988+02	Très bien, cela me va
+2	4	2021-05-25 02:28:34.91036+02	Bonjour, le meuble est toujours disponible ?
+\.
+
+
+--
+-- TOC entry 3028 (class 0 OID 16397)
+-- Dependencies: 201
+-- Data for Name: Profil; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Profil" (id, username, password, "contactPhone", "contactMail") FROM stdin;
+1	Adrali	Azerty	\N	\N
+2	toto72	password	16556154	totoduck@hotmail.com
+3	tataRPZMontpellier	mdp	1498461	tataduck@gmail.com
+4	amazonCEO	betterThanGoogle	0011111111	amazon@gmail.com
+\.
+
+
+--
+-- TOC entry 3030 (class 0 OID 24584)
+-- Dependencies: 203
+-- Data for Name: Profil_Pers; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Profil_Pers" (id, "firstName", "lastName") FROM stdin;
+2	Toto	Duck
+3	Tata	Duck
+\.
+
+
+--
+-- TOC entry 3029 (class 0 OID 24576)
+-- Dependencies: 202
+-- Data for Name: Profil_Pro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."Profil_Pro" (id, "companyName", website) FROM stdin;
+4	Amazon	www.amazon.com
+\.
+
+
+--
+-- TOC entry 3032 (class 0 OID 24600)
+-- Dependencies: 205
+-- Data for Name: ReportAnnonce; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public."ReportAnnonce" (id_profil, id_annonce, raison) FROM stdin;
+2	4	Fausse annonce
+\.
+
+
+--
+-- TOC entry 3051 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: Annonce_id_annonce_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Annonce_id_annonce_seq"', 5, true);
+
+
+--
+-- TOC entry 3052 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: Profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public."Profile_id_seq"', 4, true);
+
+
+--
+-- TOC entry 2890 (class 2606 OID 24599)
+-- Name: Annonce Annonce_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Annonce"
+    ADD CONSTRAINT "Annonce_pkey" PRIMARY KEY (id_annonce);
+
+
+--
+-- TOC entry 2894 (class 2606 OID 24612)
+-- Name: AnnoncesSaves AnnoncesSaves_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."AnnoncesSaves"
+    ADD CONSTRAINT "AnnoncesSaves_pkey" PRIMARY KEY (id_profil, id_annonce);
+
+
+--
+-- TOC entry 2896 (class 2606 OID 24626)
+-- Name: Messages Messages_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Messages"
+    ADD CONSTRAINT "Messages_pkey" PRIMARY KEY (id_profil_emetteur, id_profil_recepteur, date_envoie);
+
+
+--
+-- TOC entry 2888 (class 2606 OID 24591)
+-- Name: Profil_Pers Profile_Pers_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Profil_Pers"
+    ADD CONSTRAINT "Profile_Pers_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2886 (class 2606 OID 24583)
+-- Name: Profil_Pro Profile_Pro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Profil_Pro"
+    ADD CONSTRAINT "Profile_Pro_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2884 (class 2606 OID 16404)
+-- Name: Profil Profile_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."Profil"
+    ADD CONSTRAINT "Profile_pkey" PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2892 (class 2606 OID 24607)
+-- Name: ReportAnnonce ReportAnnonce_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."ReportAnnonce"
+    ADD CONSTRAINT "ReportAnnonce_pkey" PRIMARY KEY (id_profil);
+
+
+--
+-- TOC entry 3042 (class 0 OID 0)
+-- Dependencies: 3041
+-- Name: DATABASE petites_annonces; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT CONNECT ON DATABASE petites_annonces TO "appUser";
+
+
+--
+-- TOC entry 3043 (class 0 OID 0)
+-- Dependencies: 3
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+GRANT USAGE ON SCHEMA public TO "appUser";
+
+
+--
+-- TOC entry 3044 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: TABLE "Annonce"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE ON TABLE public."Annonce" TO "appUser";
+
+
+--
+-- TOC entry 3045 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: TABLE "AnnoncesSaves"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT,DELETE ON TABLE public."AnnoncesSaves" TO "appUser";
+
+
+--
+-- TOC entry 3046 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: TABLE "Messages"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT ON TABLE public."Messages" TO "appUser";
+
+
+--
+-- TOC entry 3047 (class 0 OID 0)
+-- Dependencies: 201
+-- Name: TABLE "Profil"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT ON TABLE public."Profil" TO "appUser";
+
+
+--
+-- TOC entry 3048 (class 0 OID 0)
+-- Dependencies: 203
+-- Name: TABLE "Profil_Pers"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT ON TABLE public."Profil_Pers" TO "appUser";
+
+
+--
+-- TOC entry 3049 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: TABLE "Profil_Pro"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT ON TABLE public."Profil_Pro" TO "appUser";
+
+
+--
+-- TOC entry 3050 (class 0 OID 0)
+-- Dependencies: 205
+-- Name: TABLE "ReportAnnonce"; Type: ACL; Schema: public; Owner: postgres
+--
+
+GRANT SELECT,INSERT ON TABLE public."ReportAnnonce" TO "appUser";
+
+
+-- Completed on 2021-05-25 03:58:43
+
+--
+-- PostgreSQL database dump complete
+--
+
+--
+-- Database "postgres" dump
+--
+
+\connect postgres
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 13.2
+-- Dumped by pg_dump version 13.2
+
+-- Started on 2021-05-25 03:58:43
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2 (class 3079 OID 16384)
+-- Name: adminpack; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS adminpack WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2980 (class 0 OID 0)
+-- Dependencies: 2
+-- Name: EXTENSION adminpack; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION adminpack IS 'administrative functions for PostgreSQL';
+
+
+-- Completed on 2021-05-25 03:58:44
+
+--
+-- PostgreSQL database dump complete
+--
+
+-- Completed on 2021-05-25 03:58:44
+
+--
+-- PostgreSQL database cluster dump complete
+--
+
