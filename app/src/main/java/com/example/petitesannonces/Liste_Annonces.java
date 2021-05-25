@@ -33,11 +33,11 @@ public class Liste_Annonces extends AppCompatActivity {
         /// Association des vars aux view
         ////////////////
         id_user = getIntent().getIntExtra("id_user",-1);
+        recyclerView = findViewById(R.id.RecyclerViewListe);
 
         contexteActuel = this;
         this.configureOnClickRecyclerView();
 
-        recyclerView = findViewById(R.id.RecyclerViewListe);
         spinnerLocalisation = (Spinner)findViewById(R.id.spinner_liste_annonce);
         spinnerCategorie = (Spinner)findViewById(R.id.spinnerCategorieRecherche);
 
