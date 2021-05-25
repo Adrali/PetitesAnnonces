@@ -21,53 +21,46 @@ public class Liste_Annonces extends AppCompatActivity {
     Context contexteActuel;
     List<AnnonceModel> listeAnnonces = null;
     RecyclerView recyclerView;
-    Spinner spinnerLocalisation;
-    ItemAnnonceAdapter adapter;
+    Spinner spinnerLocalisation, spinnerCategorie;
+    ItemAnnonceAdapter adapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste__annonces);
+
+        /////////////////
+        /// Association des vars aux view
+        ////////////////
         id_user = getIntent().getIntExtra("id_user",-1);
+
         contexteActuel = this;
+        this.configureOnClickRecyclerView();
 
         recyclerView = findViewById(R.id.RecyclerViewListe);
-        this.configureOnClickRecyclerView();
         spinnerLocalisation = (Spinner)findViewById(R.id.spinner_liste_annonce);
+        spinnerCategorie = (Spinner)findViewById(R.id.spinnerCategorieRecherche);
+
+
+        /////////////////
+        /// Ajout comportement du boutons
+        ////////////////
         ((ImageButton)findViewById(R.id.btnimg_rechercher)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //On récup les infos des inputs
                 String recherche = ((EditText)findViewById(R.id.et_recherche)).getText().toString().trim();
                 String localisation = spinnerLocalisation.getSelectedItem().toString();
+                String categorie = spinnerCategorie.getSelectedItem().toString();
+                //On cherche dans la base de donnée puis on affiche
                 if(!recherche.equals("") ){
-                    //listeAnnonces = Database.getInstance().rechercheAnnonces(recherche,localisation);
-                    listeAnnonces = new ArrayList<AnnonceModel>();
-                    listeAnnonces.add(new AnnonceModel(1,1,"Je sens bon",10.15,null,"Produit 1"));
-                    listeAnnonces.add(new AnnonceModel(2,1,"Je suis grand",27.15,null,"Produit 2"));
-                    listeAnnonces.add(new AnnonceModel(3,2,"Je vais vite",0.15,null,"Produit 3"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 4"));
-                    listeAnnonces.add(new AnnonceModel(1,1,"Je sens bon",10.15,null,"Produit 5"));
-                    listeAnnonces.add(new AnnonceModel(2,1,"Je suis grand",27.15,null,"Produit 6"));
-                    listeAnnonces.add(new AnnonceModel(3,2,"Je vais vite",0.15,null,"Produit 7"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 8"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 9"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 10"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 11"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 12"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 13"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 14"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 15"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 16"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 17"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 18"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 19"));
-                    listeAnnonces.add(new AnnonceModel(4,2,"Je suis capable de dancer",1000.00,null,"Produit 20"));
+                    listeAnnonces = Database.getInstance().rechercheAnnonces(recherche,localisation,categorie);
                     recyclerView.setAdapter(adapter = new ItemAnnonceAdapter(listeAnnonces,R.layout.item_mini_annonce));
                 }
             }
         });
     }
-
+    /**Ajoute le comportement cliquable au recycler view**/
     private void configureOnClickRecyclerView(){
         ItemClickSupport.addTo(recyclerView, R.layout.activity_liste__annonces)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {

@@ -68,11 +68,12 @@ public class Inscription extends AppCompatActivity {
                 Pattern pattern = Pattern.compile("^((\\w[^\\W]+)[\\.\\-]?){1,}\\@(([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
                 Matcher matcher = pattern.matcher(((EditText)findViewById(R.id.et_mail)).getText().toString());
 
-
+                ///////////////
+                ///// Verification de champs de texte
+                //////////////
 
                 if(username.equals("") ){
                     ((EditText)findViewById(R.id.et_username)).setBackgroundColor(getResources().getColor(R.color.redTransparency));
-
                     valide = false;
                 }else{
                     ((EditText)findViewById(R.id.et_username)).setBackgroundColor(getResources().getColor(R.color.white));
@@ -121,27 +122,35 @@ public class Inscription extends AppCompatActivity {
                     ((EditText)findViewById(R.id.et_password)).setBackgroundColor(getResources().getColor(R.color.white));
                 }
 
+                /////////
+                //// On essaye d'ajouter a la bdd puis de connecter
+                /////////
 
+                if(valide) {
+                    if(db.isConnected()) {
+                        if (Database.getInstance().userExist(username)) {
+                            if (isProfessional)
+                                Database.getInstance().signInUser(username, password, firstname, lastname, phone, email);
+                            else
+                                Database.getInstance().signInPro(username, password, website, companyname, phone, email);
+                            int id = Database.getInstance().connectUser(username, password);
+                            Toast.makeText(getApplicationContext(),"Vous avez correctement été inscrit",Toast.LENGTH_LONG).show();
 
-                if(valide && db.isConnected()) {
-                    if(Database.getInstance().userExist(username)){
-                        if(isProfessional)
-                            Database.getInstance().signInUser(username,password,firstname,lastname,phone,email);
-                        else
-                            Database.getInstance().signInpro(username,password,website,companyname,phone,email);
-                        int id = Database.getInstance().connectUser(username,password);
-                        if(id>=0){
-                            Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
-                            iMenu.putExtra("id_user",id);
-                            startActivity(iMenu);
+                            if (id >= 0) {
+                                Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
+                                iMenu.putExtra("id_user", id);
+                                startActivity(iMenu);
+                            }
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Le nom de compte existe déjà",Toast.LENGTH_SHORT).show();
+
                         }
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Erreur de connexion avec la base de donnée",Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
-                    if(db.isConnected())
-                        Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
-                    else
-                        Toast.makeText(getApplicationContext(),"Erreur de connexion avec la base de donnée",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Certains champs de sont pas valides",Toast.LENGTH_SHORT).show();
                 }
             }
         });

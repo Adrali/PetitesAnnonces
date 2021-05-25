@@ -1,5 +1,6 @@
 package com.example.petitesannonces;
 
+import android.media.Image;
 import android.util.Log;
 
 import java.sql.Connection;
@@ -25,9 +26,9 @@ public class Database {
             Class.forName("org.postgresql.Driver");
             connexion = DriverManager.getConnection(dbURL, user, pass);
             if (connexion != null) {
-                Log.i("DB :","Connected to database");
+                System.out.println("DB : Connected to database");
             }else {
-                Log.e("DB :","Echec de connexion");
+                System.out.println("DB : Echec de connexion");
             }
 
         } catch (SQLException ex) {
@@ -61,13 +62,13 @@ public class Database {
     }
 
     public int connectUser(String username, String password){
-        String request = "SELECT id FROM \"Profile\" WHERE username = ? AND password = ?";
+        String request = "SELECT id FROM \"Profil\" WHERE username = ? AND password = ?";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setString(1,username);
             statement.setString(2,password);
             ResultSet result = statement.executeQuery();
-            while(result.next()){
+            if(result.next()){
                 return result.getInt("ID");
             }
         }catch(java.sql.SQLException e){
@@ -78,7 +79,7 @@ public class Database {
     }
 
     public UserModel getUser(int idUser){
-        String request = "SELECT id FROM \"Profile\" WHERE id = ?" +
+        String request = "SELECT * FROM \"Profil\" WHERE id = ?" +
                 "";
         ResultSet result_gene = null,result_name = null;
         String name = "";
@@ -89,15 +90,15 @@ public class Database {
             result_gene = statement.executeQuery();
             if(result_gene.next()){
                 //On regarde si c'est un particulier
-                request = "SELECT id FROM \"Profile_Pers\" WHERE id = ?";
+                request = "SELECT * FROM \"Profil_Pers\" WHERE id = ?";
                 statement = connexion.prepareStatement(request);
                 statement.setInt(1,idUser);
                 result_name = statement.executeQuery();
                 if(result_name.next()){
-                    name =  result_name.getString("firstName") + result_name.getString("lastName");
+                    name = result_name.getString("firstName") +" "+ result_name.getString("lastName");
                 }else{
                     //Sinon c'est un pro
-                    request = "SELECT id FROM \"Profile_Pro\" WHERE id = ?";
+                    request = "SELECT * FROM \"Profil_Pro\" WHERE id = ?";
                     statement = connexion.prepareStatement(request);
                     statement.setInt(1,idUser);
                     result_name = statement.executeQuery();
@@ -118,14 +119,13 @@ public class Database {
         return null;
     }
 
-
     public boolean userExist(String username){
-        String request = "SELECT id FROM \"Profile\" WHERE username = ?";
+        String request = "SELECT id FROM \"Profil\" WHERE username = ?";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setString(1,username);
             ResultSet result = statement.executeQuery();
-            while(result.next()){
+            if(result.next()){
                 return true;
             }
         }catch(java.sql.SQLException e){
@@ -136,13 +136,13 @@ public class Database {
     }
 
     public boolean signInUser(String username, String password, String firstName, String name, String contactPhone, String contactMail){
-        String requestVerif = "SELECT id FROM Profile WHERE username = ?";
+        String requestVerif = "SELECT id FROM \"Profil\" WHERE username = ?";
         String requestAdd = "with ajout_profile as ( " +
-                " insert into Profile (ID, username,password,, contactPhone,contactMail) values (default, ?, ?,?,?) " +
+                " insert into \"Profil\" (ID, username,password, \"contactPhone\",\"contactMail\") values (default, ?,?,?,?) " +
                 " returning id " +
                 ") " +
-                "insert into Profile_Pers (ID, first_name, name) " +
-                "values ((select id from new_order),?,?)";
+                "insert into \"Profil_Pers\" (ID,\"firstName\",\"lastName\") " +
+                "values ((select id from ajout_profile),?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(requestVerif);
             statement.setString(1,username);
@@ -170,14 +170,14 @@ public class Database {
         return false; // Non inséré
     }
 
-    public boolean signInpro(String username, String password, String companyName, String website, String contactPhone, String contactMail){
-        String requestVerif = "SELECT id FROM Profile WHERE username = ?";
+    public boolean signInPro(String username, String password, String companyName, String website, String contactPhone, String contactMail){
+        String requestVerif = "SELECT id FROM \"Profil\" WHERE username = ?";
         String requestAdd = "with ajout_profile as ( " +
-                " insert into Profile (ID, username,password,contactPhone,contactMail) values (default, ?,?,?,?) " +
+                " insert into \"Profil\" (ID, username,password,\"contactPhone\",\"contactMail\") values (default, ?,?,?,?) " +
                 " returning id " +
                 ") " +
-                "insert into Profile_Pers (ID, companyName, website) " +
-                "values ((select id from new_order),?,?)";
+                "insert into \"Profil_Pro\" (ID, \"companyName\", website) " +
+                "values ((select id from ajout_profile),?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(requestVerif);
             statement.setString(1,username);
@@ -205,8 +205,8 @@ public class Database {
         return false; // Non inséré
     }
 
-    public boolean ajoutAnnonce(int id_annonceur,String nom, Double prix, String description, byte[] image,String localisation){
-        String request = "INSERT INTO annonce (id_annonce,titre,description,id_annonceur,image,localisation,prix) values (default,?,?,?,?,?,?)";
+    public boolean ajoutAnnonce(int id_annonceur,String nom, Double prix, String description, byte[] image,String localisation,String categorie){
+        String request = "INSERT INTO \"Annonce\" (id_annonce,titre,description,id_annonceur,image,localisation,prix,categorie) values (default,?,?,?,?,?,?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setString(1,nom);
@@ -215,6 +215,7 @@ public class Database {
             statement.setBytes(4,image);
             statement.setString(5,localisation);
             statement.setDouble(6,prix);
+            statement.setString(7,categorie);
 
             int rows = statement.executeUpdate();
             if(rows>0){ // L'utilisateur à été inséré
@@ -226,13 +227,13 @@ public class Database {
         return false;
     }
 
-    public boolean reportAnnonce(int id_profile, int id_annonce, String raison){
+    public boolean reportAnnonce(int id_profil, int id_annonce, String raison){
         /**Report une annonce**/
 
-        String request = "INSERT INTO \"ReportAnnonce\" (id_profile,id_annonce,raison) values (?,?,?)";
+        String request = "INSERT INTO \"ReportAnnonce\" (id_profil,id_annonce,raison) values (?,?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
-            statement.setInt(1,id_profile);
+            statement.setInt(1,id_profil);
             statement.setInt(2,id_annonce);
             statement.setString(3,raison);
             int rows = statement.executeUpdate();
@@ -247,7 +248,7 @@ public class Database {
 
     public boolean ajoutFavoris(int id_profile, int id_annonce){
         /**Ajoute une annonce des favoris d'un utilisateur**/
-        String request = "INSERT INTO \"AnnoncesSaves\" (id_profile,id_annonce,raison) values (?,?,?)";
+        String request = "INSERT INTO \"AnnoncesSaves\" (id_profil,id_annonce) values (?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile);
@@ -264,7 +265,7 @@ public class Database {
 
     public boolean retirerFavoris(int id_profile, int id_annonce){
         /**Retire une annonce des favoris d'un utilisateur**/
-        String request = "DELETE FROM \"AnnoncesSaves\" WHERE id_profile = ? AND id_annonce = ?)";
+        String request = "DELETE FROM \"AnnoncesSaves\" WHERE id_profil = ? AND id_annonce = ?";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile);
@@ -280,7 +281,7 @@ public class Database {
     }
 
     public boolean estFavoris(int id_profile, int id_annonce){
-        String request = "SELECT FROM \"AnnoncesSaves\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?)";
+        String request = "SELECT * FROM \"AnnoncesSaves\" WHERE (id_profil = ? AND id_annonce = ?)";
         ArrayList<String> messages = new ArrayList<String>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
@@ -300,7 +301,7 @@ public class Database {
 
     public boolean envoyerMessage(int id_profile_emmeteur, int id_profile_recepteur, String message){
         /**Retire une annonce des favoris d'un utilisateur**/
-        String request = "INSERT INTO Messages (id_profile_emetteur,id_profile_recepteur,message) values (?,?,?)";
+        String request = "INSERT INTO \"Messages\" (id_profil_emetteur,id_profil_recepteur,message) values (?,?,?)";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_profile_emmeteur);
@@ -318,7 +319,7 @@ public class Database {
 
 
     public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur){
-        String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? AND id_profile_recepteur = ?) OR (id_profile_emetteur = ? AND id_profile_recepteur = ?) ORDER BY date_envoie DESC";
+        String request = "SELECT * FROM \"Messages\" WHERE (id_profil_emetteur = ? AND id_profil_recepteur = ?) OR (id_profil_emetteur = ? AND id_profil_recepteur = ?) ORDER BY date_envoie ASC";
         ArrayList<MessageModel> messages = new ArrayList<MessageModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
@@ -328,7 +329,7 @@ public class Database {
             statement.setInt(4,idUser);
             ResultSet result = statement.executeQuery();
             while(result.next()){
-                messages.add(new MessageModel(result.getString("message"),result.getInt("id_profile_emetteur") == idUser ? true:false));
+                messages.add(new MessageModel(result.getString("message"),result.getInt("id_profil_emetteur") == idUser ? true:false));
             }
         }catch(java.sql.SQLException e){
             System.out.println("Erreur sql : " + e);
@@ -338,7 +339,7 @@ public class Database {
     }
 
     public List<UserModel> obtenirInterlocuteurs(int idUser){
-        String request = "SELECT message FROM \"Profile\" WHERE (id_profile_emetteur = ? OR id_profile_recepteur = ?) ORDER BY date_envoie DESC";
+        String request = "SELECT * FROM \"Profil\",\"Messages\" WHERE (id_profil_emetteur = ? OR id_profil_recepteur = ?) ORDER BY date_envoie ASC";
         ArrayList<UserModel> users = new ArrayList<UserModel>();
         Set<Integer> idUserObtains = new HashSet<Integer>();
         idUserObtains.add(idUser);
@@ -348,13 +349,13 @@ public class Database {
             statement.setInt(2,idUser);
             ResultSet result = statement.executeQuery();
             while(result.next()){
-                if(!idUserObtains.contains(result.getInt("id_profile_emetteur"))){
-                    idUserObtains.add(result.getInt("id_profile_emetteur"));
-                    users.add(getUser(result.getInt("id_profile_emetteur")));
+                if(!idUserObtains.contains(result.getInt("id_profil_emetteur"))){
+                    idUserObtains.add(result.getInt("id_profil_emetteur"));
+                    users.add(getUser(result.getInt("id_profil_emetteur")));
                 }
-                if(!idUserObtains.contains(result.getInt("id_profile_recepteur"))) {
-                    idUserObtains.add(result.getInt("id_profile_recepteur"));
-                    users.add(getUser(result.getInt("id_profile_recepteur")));
+                if(!idUserObtains.contains(result.getInt("id_profil_recepteur"))) {
+                    idUserObtains.add(result.getInt("id_profil_recepteur"));
+                    users.add(getUser(result.getInt("id_profil_recepteur")));
                 }
             }
         }catch(java.sql.SQLException e){
@@ -365,12 +366,14 @@ public class Database {
     }
 
 
-    public List<AnnonceModel> rechercheAnnonces(String nom, String localisation){
-        String request = "SELECT * FROM \"Annonce\" WHERE nom LIKE ?";
+    public List<AnnonceModel> rechercheAnnonces(String nom, String localisation,String categorie){
+        String request = "SELECT * FROM \"Annonce\" WHERE (titre LIKE ?) AND categorie = ? AND localisation = ?";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
-            statement.setString(1,"%"+localisation+"%");
+            statement.setString(1,"%"+nom+"%");
+            statement.setString(2,categorie);
+            statement.setString(3,localisation);
             ResultSet result = statement.executeQuery();
             while(result.next()){
                 AnnonceModel a = new AnnonceModel(result.getInt("id_annonce"),
@@ -413,7 +416,7 @@ public class Database {
     }
 
     public List<AnnonceModel> rechercheAnnoncesFavori(int idPersonne){
-        String request = "SELECT * FROM \"Annonce\",\"AnnoncesSave\" WHERE AnnoncesSave.id_profile = ? AND AnnoncesSave.id_profile = Annonce.id_annonceur";
+        String request = "SELECT * FROM \"Annonce\", \"AnnoncesSaves\" WHERE \"AnnoncesSaves\".id_profil = ? AND \"AnnoncesSaves\".id_annonce = \"Annonce\".id_annonce";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
@@ -436,7 +439,7 @@ public class Database {
     }
 
     public List<AnnonceModel> rechercheMesAnnonces(int idPersonne){
-        String request = "SELECT * FROM \"Annonce\" WHERE Annonce.id_annonceur = ?";
+        String request = "SELECT * FROM \"Annonce\" WHERE \"Annonce\".id_annonceur = ?";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
@@ -459,7 +462,7 @@ public class Database {
     }
 
     public boolean supprimerAnnonce(int id_annonce){
-        String request = "DELETE FROM Annonce WHERE id_annonce = ?)";
+        String request = "DELETE FROM \"Annonce\" WHERE id_annonce = ?";
         try{
             PreparedStatement statement = connexion.prepareStatement(request);
             statement.setInt(1,id_annonce);

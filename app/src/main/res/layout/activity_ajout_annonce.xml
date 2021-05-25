@@ -29,8 +29,7 @@
         app:layout_constraintBottom_toTopOf="@+id/et_nompublication"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
 
     <Button
@@ -46,13 +45,29 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="395dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="65dp"
+        android:layout_width="170dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="8dp"
         android:entries="@array/liste_regions"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_message"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerCategorie"
+        android:layout_width="170dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="8dp"
+        android:entries="@array/liste_categorie"
+        app:layout_constraintBottom_toTopOf="@+id/btn_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/spinner" />
 
     <ImageButton
         android:id="@+id/imgBtn_pickImage"

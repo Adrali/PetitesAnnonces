@@ -16,7 +16,12 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         contexteActuel = this;
+
         id_user = getIntent().getIntExtra("id_user",-1);
+
+        /////////////////
+        /// Ajout comportement des boutons
+        ////////////////
         ((Button)findViewById(R.id.btn_recherche_annonce)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -28,7 +33,7 @@ public class Menu extends AppCompatActivity {
         ((Button)findViewById(R.id.btn_annonces_fav)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent iListe = new Intent().setClass(contexteActuel, Liste_Annonces.class);
+                Intent iListe = new Intent().setClass(contexteActuel, Liste_Annonces_Favorites.class);
                 iListe.putExtra("id_user",id_user);
                 startActivity(iListe);
             }
@@ -67,4 +72,6 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
+
+
 }

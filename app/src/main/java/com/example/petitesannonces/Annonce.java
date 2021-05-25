@@ -30,8 +30,7 @@ public class Annonce extends AppCompatActivity {
         id_annonceur = getIntent().getIntExtra("id_annonceur",-2);
         id_annonceur = getIntent().getIntExtra("id_annonce",-3);
 
-
-
+        //Si l'id est non valable on retourne au menu
         if(id_annonce < 0 ){
             Toast.makeText(getApplicationContext(), "Erreur, l'annonce n'a pas pû être trouvé", Toast.LENGTH_SHORT);
             Intent iMenu = new Intent().setClass(contexteActuel, Menu.class);
@@ -39,32 +38,29 @@ public class Annonce extends AppCompatActivity {
             startActivity(iMenu);
         }
 
-        if (id_user == id_annonceur){
-            // Si on est le proprio de l'annonce
+
+        if (id_user == id_annonceur){ //Si on possède l'annonce, on active les boutons associés
             ((ImageButton)findViewById(R.id.btnimg_signaler)).setVisibility(View.INVISIBLE);
             ((ImageButton)findViewById(R.id.btnimg_fav)).setVisibility(View.INVISIBLE);
             ((ImageButton)findViewById(R.id.btnimg_supprimer)).setVisibility(View.VISIBLE);
             ((Button)findViewById(R.id.btn_appeler)).setVisibility(View.INVISIBLE);
             ((Button)findViewById(R.id.btn_message)).setVisibility(View.INVISIBLE);
 
-
-
-
-        }else{
-            // Si l'annonce appartiens a quelqu'un d'autre
+        }else{ // Si on ne la possède pas, on a les boutons traditionnels
             ((ImageButton)findViewById(R.id.btnimg_signaler)).setVisibility(View.VISIBLE);
             ((ImageButton)findViewById(R.id.btnimg_fav)).setVisibility(View.VISIBLE);
             ((ImageButton)findViewById(R.id.btnimg_supprimer)).setVisibility(View.INVISIBLE);
             ((Button)findViewById(R.id.btn_appeler)).setVisibility(View.VISIBLE);
             ((Button)findViewById(R.id.btn_message)).setVisibility(View.VISIBLE);
-            if(Database.getInstance().estFavoris(id_user,id_annonce)) {
+            if(Database.getInstance().estFavoris(id_user,id_annonce)) { //On regarde si l'annonce est en favoris
                 estFavoris = true;
             }
         }
 
+        //On récupère les infos de l'annonce et de l'annonceur
         annonceur = Database.getInstance().getUser(id_annonceur);
         annonce = Database.getInstance().rechercheAnnonce(id_annonce);
-
+        //Puis on les affiches
         ((TextView)findViewById(R.id.et_nompublication)).setText(annonce.getNom_annonce());
         ((TextView)findViewById(R.id.et_prix)).setText(String.valueOf(annonce.getPrix()));
         ((TextView)findViewById(R.id.et_description)).setText(String.valueOf(annonce.getDescription()));
@@ -74,6 +70,9 @@ public class Annonce extends AppCompatActivity {
             ((ImageView)findViewById(R.id.img_annonce)).setImageDrawable(ImageProcessing.bitmapToDrawable(contexteActuel,annonce.getImage()));
         }
 
+        /////////////////
+        /// Ajout comportement des boutons
+        ////////////////
 
         ((ImageButton)findViewById(R.id.btnimg_signaler)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +85,7 @@ public class Annonce extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.btnimg_fav)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(estFavoris){
+                if(!estFavoris){
                     if(Database.getInstance().ajoutFavoris(id_user,id_annonceur)){
                         //L'annonce est bien passée en favoris
                         Toast.makeText(getApplicationContext(), "L'annonce à été sauvegardée", Toast.LENGTH_SHORT);
@@ -127,7 +126,7 @@ public class Annonce extends AppCompatActivity {
         ((Button)findViewById(R.id.btn_appeler)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
                 callIntent.setData(Uri.parse("tel:"+annonceur.getPhone()));//change the number
                 startActivity(callIntent);
             }

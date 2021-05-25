@@ -63,4 +63,14 @@
         <item>Mayotte</item>
 
     </string-array>
+
+    <string-array name="liste_categorie">
+        <item>Autre</item>
+        <item>Jardin</item>
+        <item>Automobile</item>
+        <item>Immobilier</item>
+        <item>Services</item>
+        <item>Culture</item>
+        <item>Multimedia</item>
+    </string-array>
 </resources>

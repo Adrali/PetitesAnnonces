@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,10 +25,12 @@ public class ItemAnnonceAdapter extends RecyclerView.Adapter<ItemAnnonceAdapter.
 
         public TextView nom;
         public TextView prix;
+        public ImageView image;
         public ItemAnnonceViewHolder(View itemView) {
             super(itemView);
             nom = itemView.findViewById(R.id.nom_item_annonce);
             prix = itemView.findViewById(R.id.prix_item_annonce);
+            image = itemView.findViewById(R.id.imgView_mini);
         }
 
     }
@@ -47,6 +50,7 @@ public class ItemAnnonceAdapter extends RecyclerView.Adapter<ItemAnnonceAdapter.
         AnnonceModel current = annonces.get(position);
         viewHolder.nom.setText(current.nom_annonce);
         viewHolder.prix.setText(String.valueOf(current.prix) + "€");
+        viewHolder.image.setImageBitmap(current.image);
     }
 
     @Override

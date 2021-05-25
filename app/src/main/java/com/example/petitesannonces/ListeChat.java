@@ -23,22 +23,15 @@ public class ListeChat extends AppCompatActivity {
         setContentView(R.layout.activity_liste_chat);
         id_user = getIntent().getIntExtra("id_user", -1);
         recyclerView = findViewById(R.id.recyclerViewListeChat);
-        configureOnClickRecyclerView();
-        //List<UserModel> listeUserChat = Database.getInstance().obtenirInterlocuteurs(id_user);
-        List<UserModel> listeUserChat = new ArrayList<UserModel>();
-        listeUserChat.add(new UserModel(1,"Toto","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(2,"Tata","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(3,"Titi","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(4,"Tutu","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(5,"Lolo","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(6,"Lala","000000012","toto@gmail"));
-        listeUserChat.add(new UserModel(7,"Lili","000000012","toto@gmail"));
-        recyclerView.setAdapter(adapter = new ItemListChatAdapter(listeUserChat,R.layout.item_list_chat));
         contexteActuel = this;
-
+        this.configureOnClickRecyclerView();
+        List<UserModel> listeUserChat = Database.getInstance().obtenirInterlocuteurs(id_user);
+        recyclerView.setAdapter(adapter = new ItemListChatAdapter(listeUserChat,R.layout.item_list_chat));
     }
+
+    /**Ajoute le comportement cliquable au recycler view**/
     private void configureOnClickRecyclerView(){
-        ItemClickSupport.addTo(recyclerView, R.layout.activity_liste__annonces)
+        ItemClickSupport.addTo(recyclerView, R.layout.activity_liste_chat)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
