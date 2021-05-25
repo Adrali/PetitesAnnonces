@@ -29,9 +29,9 @@ public class Liste_Annonces_Favorites extends AppCompatActivity {
 
         id_user = getIntent().getIntExtra("id_user",-1);
         contexteActuel = this;
+        recyclerView = findViewById(R.id.RecyclerViewListeFavoris);
         this.configureOnClickRecyclerView();
 
-        recyclerView = findViewById(R.id.RecyclerViewListeFavoris);
 
         //On cherche dans la base de donnée puis on affiche
         listeAnnonces = Database.getInstance().rechercheAnnoncesFavori(id_user);
