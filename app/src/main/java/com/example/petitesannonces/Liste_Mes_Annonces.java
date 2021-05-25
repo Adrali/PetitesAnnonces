@@ -28,8 +28,9 @@ public class Liste_Mes_Annonces extends AppCompatActivity {
 
         id_user = getIntent().getIntExtra("id_user",-1);
         contexteActuel = this;
-        this.configureOnClickRecyclerView();
         recyclerView = findViewById(R.id.RecyclerViewListeMesAnnonces);
+
+        this.configureOnClickRecyclerView();
 
         //On cherche dans la base de donnée puis on affiche
         listeAnnonces = Database.getInstance().rechercheMesAnnonces(id_user);
