@@ -43,8 +43,8 @@ public class Chat extends AppCompatActivity {
         ((ImageButton)findViewById(R.id.imgBtn_actualiser)).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                dest = Database.getInstance().getUser(id_dest);
                 lMessages = Database.getInstance().obtenirMessage(id_user,id_dest);
+                recyclerView.setAdapter(new ItemMessageAdapter(lMessages,dest.getName(),R.layout.item_mini_chat));
             }
         });
 
@@ -52,6 +52,7 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String message = ((EditText)findViewById(R.id.et_envoi_message)).getText().toString().trim();
+
                 if(!message.equals("") ){
                     if(Database.getInstance().isConnected()){
                         if(Database.getInstance().envoyerMessage(id_user,id_dest,message)) {

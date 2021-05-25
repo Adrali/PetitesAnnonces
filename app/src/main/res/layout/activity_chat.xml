@@ -25,6 +25,16 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_envoi_message"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <View
+        android:id="@+id/view7"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="1"
+        android:background="@color/vertCanard"
+        app:layout_constraintTop_toBottomOf="@+id/et_titre_chat"
+        tools:layout_editor_absoluteX="-9dp" />
+
     <ImageButton
         android:id="@+id/btn_envoi_message"
         android:layout_width="wrap_content"

@@ -13,11 +13,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+/** Database est un singleton qui se connecte à une base de donnée PSQL**/
 public class Database {
     private static volatile Database database = null;
     public Connection connexion = null;
 
+    /** Contructeur privé de la BDD**/
     private Database() {
         try {
             String dbURL = "jdbc:postgresql://localhost:5432/petites_annonces";
@@ -37,7 +38,7 @@ public class Database {
             e.printStackTrace();
         }
     }
-
+    /** Retourne l'instantce de la bbd**/
     public static Database getInstance() {
         Database result = database;
         if (result != null) {
@@ -50,7 +51,7 @@ public class Database {
             return database;
         }
     }
-
+    /** Ferme la connexion**/
     private void closeDatabase(){
         try {
             if (connexion != null && !connexion.isClosed()) {
@@ -61,6 +62,7 @@ public class Database {
         }
     }
 
+    /** Retourne l'id de l'utilisateur, -1 si celui ci n'existe pas**/
     public int connectUser(String username, String password){
         String request = "SELECT id FROM \"Profil\" WHERE username = ? AND password = ?";
         try{
@@ -77,7 +79,7 @@ public class Database {
 
         return -1; // Id non trouvé
     }
-
+    /** Retourne le UserModel d'un utilisateur **/
     public UserModel getUser(int idUser){
         String request = "SELECT * FROM \"Profil\" WHERE id = ?" +
                 "";
@@ -118,7 +120,7 @@ public class Database {
         }
         return null;
     }
-
+    /** Retourne vrai si l'utilisateur existe a partir de son username**/
     public boolean userExist(String username){
         String request = "SELECT id FROM \"Profil\" WHERE username = ?";
         try{
@@ -135,6 +137,7 @@ public class Database {
         return false; // Id non trouvé
     }
 
+    /** Inscrit un particulier, retourne vrai si l'ajout a réussi **/
     public boolean signInUser(String username, String password, String firstName, String name, String contactPhone, String contactMail){
         String requestVerif = "SELECT id FROM \"Profil\" WHERE username = ?";
         String requestAdd = "with ajout_profile as ( " +
@@ -170,6 +173,7 @@ public class Database {
         return false; // Non inséré
     }
 
+    /**Inscrit un professionel, retourne vrai si l'ajout a réussi **/
     public boolean signInPro(String username, String password, String companyName, String website, String contactPhone, String contactMail){
         String requestVerif = "SELECT id FROM \"Profil\" WHERE username = ?";
         String requestAdd = "with ajout_profile as ( " +
@@ -205,6 +209,7 @@ public class Database {
         return false; // Non inséré
     }
 
+    /** Ajoute une annonce, retourne vrai si cela a réussi**/
     public boolean ajoutAnnonce(int id_annonceur,String nom, Double prix, String description, byte[] image,String localisation,String categorie){
         String request = "INSERT INTO \"Annonce\" (id_annonce,titre,description,id_annonceur,image,localisation,prix,categorie) values (default,?,?,?,?,?,?,?)";
         try{
@@ -227,6 +232,7 @@ public class Database {
         return false;
     }
 
+    /** Report une annonce, vrai si cela a réussi**/
     public boolean reportAnnonce(int id_profil, int id_annonce, String raison){
         /**Report une annonce**/
 
@@ -246,6 +252,7 @@ public class Database {
         return false;
     }
 
+    /** Ajoute une annonce aux favoris d'un user, vrai si cela a réussi**/
     public boolean ajoutFavoris(int id_profile, int id_annonce){
         /**Ajoute une annonce des favoris d'un utilisateur**/
         String request = "INSERT INTO \"AnnoncesSaves\" (id_profil,id_annonce) values (?,?)";
@@ -263,6 +270,7 @@ public class Database {
         return false;
     }
 
+    /** Retire une annonce des favoris d'un user, vrai si cela a réussi**/
     public boolean retirerFavoris(int id_profile, int id_annonce){
         /**Retire une annonce des favoris d'un utilisateur**/
         String request = "DELETE FROM \"AnnoncesSaves\" WHERE id_profil = ? AND id_annonce = ?";
@@ -279,7 +287,7 @@ public class Database {
         }
         return false;
     }
-
+    /** Retourne vrai si une annonce est dans les favoris d'un profile**/
     public boolean estFavoris(int id_profile, int id_annonce){
         String request = "SELECT * FROM \"AnnoncesSaves\" WHERE (id_profil = ? AND id_annonce = ?)";
         ArrayList<String> messages = new ArrayList<String>();
@@ -298,7 +306,7 @@ public class Database {
 
         return false; // Id non trouvé
     }
-
+    /** Envoie un message d'un utilisateur vers un autre**/
     public boolean envoyerMessage(int id_profile_emmeteur, int id_profile_recepteur, String message){
         /**Retire une annonce des favoris d'un utilisateur**/
         String request = "INSERT INTO \"Messages\" (id_profil_emetteur,id_profil_recepteur,message) values (?,?,?)";
@@ -317,7 +325,7 @@ public class Database {
         return false;
     }
 
-
+    /** Retourne la liste des message entre deux utilisateurs**/
     public List<MessageModel> obtenirMessage(int idUser, int idInterlocuteur){
         String request = "SELECT * FROM \"Messages\" WHERE (id_profil_emetteur = ? AND id_profil_recepteur = ?) OR (id_profil_emetteur = ? AND id_profil_recepteur = ?) ORDER BY date_envoie ASC";
         ArrayList<MessageModel> messages = new ArrayList<MessageModel>();
@@ -337,7 +345,7 @@ public class Database {
 
         return messages; // Id non trouvé
     }
-
+    /** Retourne la liste des user anyant une conversation avec idUser **/
     public List<UserModel> obtenirInterlocuteurs(int idUser){
         String request = "SELECT * FROM \"Profil\",\"Messages\" WHERE (id_profil_emetteur = ? OR id_profil_recepteur = ?) ORDER BY date_envoie ASC";
         ArrayList<UserModel> users = new ArrayList<UserModel>();
@@ -365,7 +373,7 @@ public class Database {
         return users; // Id non trouvé
     }
 
-
+    /** Retourne la liste d'une recherche d'annonce**/
     public List<AnnonceModel> rechercheAnnonces(String nom, String localisation,String categorie){
         String request = "SELECT * FROM \"Annonce\" WHERE (titre LIKE ?) AND categorie = ? AND localisation = ?";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
@@ -391,6 +399,7 @@ public class Database {
         return annonces;
     }
 
+    /** Retourne le AnnonceModel d'une annonce a partir de son Id**/
     public AnnonceModel rechercheAnnonce(int id_annonce){
         String request = "SELECT * FROM \"Annonce\" WHERE id_annonce = ?";
         AnnonceModel annonce;
@@ -415,6 +424,7 @@ public class Database {
         return null;
     }
 
+    /** Retourne la liste des annonces favoris d'un utilisateur**/
     public List<AnnonceModel> rechercheAnnoncesFavori(int idPersonne){
         String request = "SELECT * FROM \"Annonce\", \"AnnoncesSaves\" WHERE \"AnnoncesSaves\".id_profil = ? AND \"AnnoncesSaves\".id_annonce = \"Annonce\".id_annonce";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
@@ -438,6 +448,7 @@ public class Database {
         return annonces;
     }
 
+    /** Retourne la liste des annonces publiée par un utilisateur**/
     public List<AnnonceModel> rechercheMesAnnonces(int idPersonne){
         String request = "SELECT * FROM \"Annonce\" WHERE \"Annonce\".id_annonceur = ?";
         ArrayList<AnnonceModel> annonces = new ArrayList<AnnonceModel>();
@@ -460,7 +471,7 @@ public class Database {
         }
         return annonces;
     }
-
+    /** Supprime une annonce,  retourne vrai si elle a bien été supprimée**/
     public boolean supprimerAnnonce(int id_annonce){
         String request = "DELETE FROM \"Annonce\" WHERE id_annonce = ?";
         try{
@@ -476,6 +487,7 @@ public class Database {
         return false;
     }
 
+    /** Retourne vrai si le signleton est connecté à la BDD**/
     public boolean isConnected(){
         return connexion != null;
     }
